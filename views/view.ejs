@@ -37,23 +37,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/markdown/markdown.min.js"></script>
 </head>
 
-<body class="bg-gray-700 text-white min-h-screen p-8">
-    <div>
-        <a href="/" class="font-bold text-4xl hover:opacity-80 transition-opacity inline-block">
+<body class="bg-gray-900 text-white min-h-screen p-4 md:p-8">
+    <div class="mb-6 md:mb-8">
+        <a href="/" class="font-bold text-2xl md:text-4xl hover:opacity-80 transition-opacity inline-block">
             <span class="text-red-400">{</span>SynzBin<span class="text-red-400">}</span>
         </a>
     </div>
 
-    <div class="max-w-9xl mx-auto mt-8 bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">
-        <h1 class="text-2xl font-bold">
+    <div class="max-w-9xl mx-auto mt-4 md:mt-8 bg-gray-800 rounded-lg shadow-lg p-4 md:p-6 border border-gray-700">
+        <h1 class="text-xl md:text-2xl font-bold wrap-break-word">
             <%= paste.title %>
         </h1>
         <% if (paste.description) { %>
-            <p class="text-lg text-gray-400 mt-2">
+            <p class="text-base md:text-lg text-gray-400 mt-2 wrap-break-word">
                 <%= paste.description %>
             </p>
             <% } %>
-                <div class="mt-4 flex items-center text-gray-400 space-x-6 pt-4 border-t border-gray-700">
+                <div
+                    class="mt-4 flex flex-col sm:flex-row sm:items-center text-gray-400 space-y-3 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-700">
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -80,19 +81,20 @@
     </div>
 
     <div class="shadow-lg">
-        <div class="mt-5 w-full bg-gray-900 h-12 rounded-t flex items-center border-b border-gray-700">
-            <span class="px-4 text-gray-400 font-medium">
+        <div
+            class="mt-5 w-full bg-gray-900 h-auto md:h-12 rounded-t flex flex-col md:flex-row md:items-center border-b border-gray-700 p-2 md:p-0">
+            <span class="px-4 text-gray-400 font-medium text-sm md:text-base mb-2 md:mb-0">
                 <%= paste.language %>
             </span>
             <% if (paste.filename) { %>
-                <div class="h-6 w-px bg-gray-700 mx-2"></div>
-                <span class="text-gray-400">
+                <div class="hidden md:block h-6 w-px bg-gray-700 mx-2"></div>
+                <span class="text-gray-400 px-4 text-sm md:text-base truncate mb-2 md:mb-0">
                     <%= paste.filename %>
                 </span>
                 <% } %>
-                    <div class="ml-auto flex items-center space-x-2 mr-4">
+                    <div class="flex flex-wrap items-center gap-2 md:gap-0 md:space-x-2 md:ml-auto px-2 md:mr-4">
                         <button id="share-btn"
-                            class="hover:bg-gray-800 text-white px-4 py-2 rounded text-sm transition duration-200 flex items-center">
+                            class="flex-1 md:flex-none hover:bg-gray-800 text-white px-3 py-2 rounded text-xs md:text-sm transition duration-200 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -101,7 +103,7 @@
                             Share
                         </button>
                         <button id="copy-btn"
-                            class="hover:bg-gray-800 text-white px-4 py-2 rounded text-sm transition duration-200 flex items-center">
+                            class="flex-1 md:flex-none hover:bg-gray-800 text-white px-3 py-2 rounded text-xs md:text-sm transition duration-200 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -110,21 +112,34 @@
                             Copy
                         </button>
                         <a href="/raw/<%= paste.shortId %>"
-                            class="hover:bg-gray-800 text-white px-4 py-2 rounded text-sm transition duration-200">
+                            class="flex-1 md:flex-none hover:bg-gray-800 text-white px-3 py-2 rounded text-xs md:text-sm transition duration-200 flex items-center justify-center">
                             Raw
                         </a>
                     </div>
         </div>
         <textarea id="viewer" data-language="<%= paste.language %>" readonly
-            class="w-full p-4 bg-gray-800 text-white font-mono text-sm focus:outline-none resize-none rounded-b border border-gray-700 border-t-0 shadow-inner"><%= paste.content %></textarea>
+            class="w-full p-4 bg-gray-800 text-white font-mono text-xs md:text-sm focus:outline-none resize-none rounded-b border border-gray-700 border-t-0 shadow-inner"><%= paste.content %></textarea>
     </div>
 
     <div class="mt-6 flex justify-end">
         <a href="/new"
-            class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-10 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/50">
+            class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 md:py-3 md:px-10 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/50 text-sm md:text-base">
             New Paste
         </a>
     </div>
+
+    <script>
+        document.getElementById('share-btn').addEventListener('click', function () {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied!';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    </script>
     <script src="/js/viewer.js"></script>
 </body>
 
