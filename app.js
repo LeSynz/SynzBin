@@ -12,33 +12,47 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-function loadRoutes(dir, baseRoute = '') {
-    fs.readdirSync(dir).forEach(file => {
+console.log('Connecting to database...');
+require('./database/connection');
+
+// --- Load Routes Automatically ---
+function loadRoutes(dir, baseRoute = "") {
+    const files = fs.readdirSync(dir);
+
+    // Sort to ensure 'api' directory loads before 'index.js'
+    files.sort((a, b) => {
+        const aIsDir = fs.statSync(path.join(dir, a)).isDirectory();
+        const bIsDir = fs.statSync(path.join(dir, b)).isDirectory();
+
+        // Directories first, then files
+        if (aIsDir && !bIsDir) return -1;
+        if (!aIsDir && bIsDir) return 1;
+
+        // index.js last among files
+        if (a === 'index.js') return 1;
+        if (b === 'index.js') return -1;
+
+        return a.localeCompare(b);
+    });
+
+    files.forEach((file) => {
         const fullPath = path.join(dir, file);
         const stat = fs.statSync(fullPath);
 
         if (stat.isDirectory()) {
             loadRoutes(fullPath, path.join(baseRoute, file));
-        } else if (file.endsWith('.js')) {
+        } else if (file.endsWith(".js")) {
             const route = require(fullPath);
-            let routePath;
-            if (file === 'index.js') {
-                routePath = baseRoute || '/';
-            } else {
-                routePath = path.join(baseRoute, file.replace('.js', ''));
-                if (!routePath.startsWith('/')) {
-                    routePath = '/' + routePath;
-                }
-            }
+            const routeName = file === "index.js" ? "" : file.replace(".js", "");
+            const routePath = path.join("/", baseRoute, routeName).replace(/\\/g, "/");
+
             app.use(routePath, route);
+            console.log(`✅ Loaded route: ${routePath}`);
         }
     });
 }
 
-loadRoutes(path.join(__dirname, 'routes'));
-
-console.log('Connecting to database...');
-require('./database/connection');
+loadRoutes(path.join(__dirname, "routes"));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
