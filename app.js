@@ -26,6 +26,9 @@ function loadRoutes(dir, baseRoute = '') {
                 routePath = baseRoute || '/';
             } else {
                 routePath = path.join(baseRoute, file.replace('.js', ''));
+                if (!routePath.startsWith('/')) {
+                    routePath = '/' + routePath;
+                }
             }
             app.use(routePath, route);
         }
@@ -33,6 +36,9 @@ function loadRoutes(dir, baseRoute = '') {
 }
 
 loadRoutes(path.join(__dirname, 'routes'));
+
+console.log('Connecting to database...');
+require('./database/connection');
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

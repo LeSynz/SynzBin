@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynzBin - New Paste</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/php/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/ruby/ruby.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/go/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/rust/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/shell/shell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/markdown/markdown.min.js"></script>
+</head>
+
+<body class="bg-gray-700 text-white min-h-screen p-8">
+    <div>
+        <a href="/" class="font-bold text-4xl">
+            <span class="text-red-400">{</span>SynzBin<span class="text-red-400">}</span>
+        </a>
+    </div>
+
+    <form id="paste-form" action="/api/new" method="POST">
+        <div class="max-w-9xl mx-auto mt-8 bg-gray-800 rounded p-6">
+            <input type="text" name="title" placeholder="Title..."
+                class="w-full text-2xl font-bold p-2 italic focus:not-italic focus:outline-none">
+            <input type="text" name="description" placeholder="Description..."
+                class="w-full text-lg p-2 mt-2 focus:outline-none">
+            <div class="mt-4 flex items-center text-gray-400 space-x-6">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-sm">Today</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span class="text-sm"><span class="text-white">0</span> views</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="mt-5 w-full bg-gray-900 h-10 rounded-t">
+                <select id="language-select" name="language"
+                    class="w-l h-full bg-gray-900 text-gray-400 font-medium px-4 rounded hover:bg-gray-800 focus:outline-none cursor-pointer mr-4">
+                    <option value="plaintext">Plain Text</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="cpp">C++</option>
+                    <option value="php">PHP</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="sql">SQL</option>
+                    <option value="bash">Bash</option>
+                    <option value="json">JSON</option>
+                    <option value="xml">XML</option>
+                    <option value="markdown">Markdown</option>
+                </select>
+                <input type="text" name="filename" placeholder="untitled..." onfocus="this.placeholder='Filename...'"
+                    onblur="this.placeholder='untitled...'"
+                    class="italic focus:bg-gray-800 focus:outline-none focus:not-italic">
+            </div>
+            <textarea id="editor" name="content" rows="20" placeholder="Start typing your code or text snippet here..."
+                class="w-full p-4 bg-gray-800 text-white font-mono text-sm focus:outline-none resize-none"></textarea>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button type="submit"
+                class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded transition duration-200">
+                Save Paste
+            </button>
+        </div>
+    </form>
+</body>
+
+</html>
+
+<script src="/js/editor.js"></script>
