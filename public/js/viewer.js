@@ -47,3 +47,14 @@ document.getElementById('copy-btn').addEventListener('click', function () {
         }, 2000);
     });
 });
+
+document.getElementById('share-btn').addEventListener('click', function () {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        const originalText = this.innerHTML;
+        this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied Link!';
+        setTimeout(() => {
+            this.innerHTML = originalText;
+        }, 2000);
+    });
+});

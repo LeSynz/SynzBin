@@ -39,12 +39,12 @@
 
 <body class="bg-gray-700 text-white min-h-screen p-8">
     <div>
-        <a href="/" class="font-bold text-4xl">
+        <a href="/" class="font-bold text-4xl hover:opacity-80 transition-opacity inline-block">
             <span class="text-red-400">{</span>SynzBin<span class="text-red-400">}</span>
         </a>
     </div>
 
-    <div class="max-w-9xl mx-auto mt-8 bg-gray-800 rounded p-6">
+    <div class="max-w-9xl mx-auto mt-8 bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">
         <h1 class="text-2xl font-bold">
             <%= paste.title %>
         </h1>
@@ -53,7 +53,7 @@
                 <%= paste.description %>
             </p>
             <% } %>
-                <div class="mt-4 flex items-center text-gray-400 space-x-6">
+                <div class="mt-4 flex items-center text-gray-400 space-x-6 pt-4 border-t border-gray-700">
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -72,41 +72,59 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
-                        <span class="text-sm"><span class="text-white">
+                        <span class="text-sm"><span class="text-white font-semibold">
                                 <%= paste.views %>
                             </span> views</span>
                     </div>
                 </div>
     </div>
 
-    <div>
-        <div class="mt-5 w-full bg-gray-900 h-10 rounded-t flex items-center">
+    <div class="shadow-lg">
+        <div class="mt-5 w-full bg-gray-900 h-12 rounded-t flex items-center border-b border-gray-700">
             <span class="px-4 text-gray-400 font-medium">
                 <%= paste.language %>
             </span>
             <% if (paste.filename) { %>
-                <span class="px-4 text-gray-400">| <%= paste.filename %></span>
+                <div class="h-6 w-px bg-gray-700 mx-2"></div>
+                <span class="text-gray-400">
+                    <%= paste.filename %>
+                </span>
                 <% } %>
-                    <button id="copy-btn"
-                        class="ml-auto mr-4 hover:bg-gray-800 text-white px-4 py-1 rounded text-sm transition duration-200">
-                        Copy
-                    </button>
-                    <a href="/raw/<%= paste.shortId %>"
-                        class="mr-4 hover:bg-gray-800 text-white px-4 py-1 rounded text-sm transition duration-200">
-                        Raw
-                    </a>
+                    <div class="ml-auto flex items-center space-x-2 mr-4">
+                        <button id="share-btn"
+                            class="hover:bg-gray-800 text-white px-4 py-2 rounded text-sm transition duration-200 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                            </svg>
+                            Share
+                        </button>
+                        <button id="copy-btn"
+                            class="hover:bg-gray-800 text-white px-4 py-2 rounded text-sm transition duration-200 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <a href="/raw/<%= paste.shortId %>"
+                            class="hover:bg-gray-800 text-white px-4 py-2 rounded text-sm transition duration-200">
+                            Raw
+                        </a>
+                    </div>
         </div>
         <textarea id="viewer" data-language="<%= paste.language %>" readonly
-            class="w-full p-4 bg-gray-800 text-white font-mono text-sm focus:outline-none resize-none"><%= paste.content %></textarea>
+            class="w-full p-4 bg-gray-800 text-white font-mono text-sm focus:outline-none resize-none rounded-b border border-gray-700 border-t-0 shadow-inner"><%= paste.content %></textarea>
     </div>
 
     <div class="mt-6 flex justify-end">
         <a href="/new"
-            class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded transition duration-200">
+            class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-10 rounded-lg transition duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/50">
             New Paste
         </a>
     </div>
-
     <script src="/js/viewer.js"></script>
 </body>
 
