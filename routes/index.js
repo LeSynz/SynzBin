@@ -3,11 +3,17 @@ const router = express.Router();
 const Paste = require('../models/PasteModel');
 
 router.get('/', (req, res) => {
-    res.render('index', { title: 'Welcome to SynzBin' });
+    res.render('index', {
+        title: 'Welcome to SynzBin',
+        req: req
+    });
 });
 
 router.get('/new', (req, res) => {
-    res.render('new', { title: 'Create a New Paste' });
+    res.render('new', {
+        title: 'Create a New Paste',
+        req: req
+    });
 });
 
 router.get('/:shortId', async (req, res) => {
@@ -22,7 +28,7 @@ router.get('/:shortId', async (req, res) => {
 
         Paste.incrementViews(shortId).catch(err => console.error('View increment error:', err));
 
-        res.render('view', { paste });
+        res.render('view', { paste, req: req });
     } catch (error) {
         res.status(500).render('500', { message: 'Internal Server Error' });
     }

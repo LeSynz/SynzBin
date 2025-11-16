@@ -7,6 +7,16 @@
     <title>
         <%= paste.title %> - SynzBin
     </title>
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="SynzBin">
+    <meta property="og:title" content="<%= paste.title %>">
+    <meta property="og:description"
+        content="<%= paste.description || `${paste.language} code snippet with ${paste.views} views` %>">
+    <meta property="og:url" content="<%= `${req.protocol}://${req.get('host')}/${paste.shortId}` %>">
+    <meta property="og:image" content="<%= `${req.protocol}://${req.get('host')}/images/og-image.png` %>">
+    <meta name="theme-color" content="#F87171">
+
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material.min.css">
