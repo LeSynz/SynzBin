@@ -15,20 +15,16 @@ app.use(express.json());
 console.log('Connecting to database...');
 require('./database/connection');
 
-// --- Load Routes Automatically ---
 function loadRoutes(dir, baseRoute = "") {
     const files = fs.readdirSync(dir);
 
-    // Sort to ensure 'api' directory loads before 'index.js'
     files.sort((a, b) => {
         const aIsDir = fs.statSync(path.join(dir, a)).isDirectory();
         const bIsDir = fs.statSync(path.join(dir, b)).isDirectory();
 
-        // Directories first, then files
         if (aIsDir && !bIsDir) return -1;
         if (!aIsDir && bIsDir) return 1;
 
-        // index.js last among files
         if (a === 'index.js') return 1;
         if (b === 'index.js') return -1;
 
