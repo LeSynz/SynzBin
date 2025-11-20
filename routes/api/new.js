@@ -7,7 +7,13 @@ const rateLimit = require('express-rate-limit');
 const createPasteLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: (req) => {
+        if (req.user && ['vip', 'admin', 'owner'].includes(req.user.role)) {
+            return 0;
+        }
         return req.user ? 10 : 5;
+    },
+    skip: (req) => {
+        return req.user && ['vip', 'admin', 'owner'].includes(req.user.role);
     },
     standardHeaders: true,
     legacyHeaders: false,

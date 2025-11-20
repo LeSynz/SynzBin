@@ -23,7 +23,7 @@ router.get('/:discordId', async (req, res) => {
             profileUser: profileUser,
             pastes: pastes,
             user: req.user || null,
-            req: req
+            req: req,
         });
     } catch (error) {
         console.error('User profile error:', error);

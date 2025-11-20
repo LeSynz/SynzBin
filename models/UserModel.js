@@ -10,12 +10,18 @@ const userSchema = new Schema({
     createdAt: { type: 'date', default: Date.now },
     pastes: { type: 'array', default: [] },
     refreshToken: { type: 'string', default: null },
+    role: { type: 'string', enum: ['user', 'vip', 'admin', 'owner'], default: 'user' },
+    banned: { type: 'boolean', default: false }
 }, {
     timestamps: true
 });
 
-const User = model('User', userSchema);
-
 // static shit here
+
+userSchema.statics.totalUsers = function () {
+    return this.countDocuments();
+};
+
+const User = model('User', userSchema);
 
 module.exports = User;

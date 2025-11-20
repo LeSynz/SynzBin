@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SynzBin</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen">
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold">
+                        <span class="text-red-400">{</span>SynzBin<span class="text-red-400">}</span>
+                    </a>
+                    <span class="ml-4 px-3 py-1 bg-red-500 text-xs rounded-full">ADMIN</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/panel-a8f5e9c2b7" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="/panel-a8f5e9c2b7/users" class="text-gray-300 hover:text-white transition">Users</a>
+                    <a href="/panel-a8f5e9c2b7/pastes" class="text-gray-300 hover:text-white transition">Pastes</a>
+                    <a href="/panel-a8f5e9c2b7/system" class="text-gray-300 hover:text-white transition">System</a>
+                    <a href="/user/<%= user.discordId %>" class="text-gray-300 hover:text-white transition">My
+                        Profile</a>
+                    <a href="/" class="text-gray-400 hover:text-gray-300 transition">Exit Admin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">Total Users</p>
+                        <p class="text-3xl font-bold text-white">
+                            <%= stats.totalUsers %>
+                        </p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">Total Pastes</p>
+                        <p class="text-3xl font-bold text-white">
+                            <%= stats.totalPastes %>
+                        </p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">Total Views</p>
+                        <p class="text-3xl font-bold text-white">
+                            <%= stats.totalViews.toLocaleString() %>
+                        </p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-purple-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-gray-800 rounded-lg border border-gray-700">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-xl font-bold">Recent Users</h2>
+                </div>
+                <div class="p-6">
+                    <% if (recentUsers.length> 0) { %>
+                        <div class="space-y-4">
+                            <% recentUsers.forEach(u=> { %>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://cdn.discordapp.com/avatars/<%= u.discordId %>/<%= u.avatar %>.png"
+                                            alt="<%= u.username %>" class="w-10 h-10 rounded-full">
+                                        <div>
+                                            <p class="font-semibold">
+                                                <%= u.username %>
+                                            </p>
+                                            <p class="text-sm text-gray-400">
+                                                <span class="px-2 py-0.5 bg-gray-700 rounded text-xs">
+                                                    <%= u.role %>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <a href="/user/<%= u.discordId %>"
+                                        class="text-red-400 hover:text-red-300 text-sm">View →</a>
+                                </div>
+                                <% }); %>
+                        </div>
+                        <% } else { %>
+                            <p class="text-gray-400 text-center py-8">No users yet</p>
+                            <% } %>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg border border-gray-700">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-xl font-bold">Recent Pastes</h2>
+                </div>
+                <div class="p-6">
+                    <% if (recentPastes.length> 0) { %>
+                        <div class="space-y-4">
+                            <% recentPastes.slice(0, 5).forEach(paste=> { %>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-semibold">
+                                            <%= paste.title %>
+                                        </p>
+                                        <p class="text-sm text-gray-400">
+                                            <span class="px-2 py-0.5 bg-gray-700 rounded text-xs">
+                                                <%= paste.language %>
+                                            </span>
+                                            <span class="ml-2">
+                                                <%= paste.views %> views
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <a href="/p/<%= paste.shortId %>"
+                                        class="text-red-400 hover:text-red-300 text-sm">View →</a>
+                                </div>
+                                <% }); %>
+                        </div>
+                        <% } else { %>
+                            <p class="text-gray-400 text-center py-8">No pastes yet</p>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 bg-gray-800 rounded-lg border border-gray-700">
+            <div class="p-6 border-b border-gray-700">
+                <h2 class="text-xl font-bold">Top Pastes</h2>
+            </div>
+            <div class="p-6">
+                <% if (topPastes.length> 0) { %>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <% topPastes.forEach(paste=> { %>
+                            <div class="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition">
+                                <h3 class="font-semibold mb-2">
+                                    <%= paste.title %>
+                                </h3>
+                                <div class="flex items-center justify-between text-sm text-gray-400">
+                                    <span>
+                                        <%= paste.language %>
+                                    </span>
+                                    <span>
+                                        <%= paste.views %> views
+                                    </span>
+                                </div>
+                                <a href="/p/<%= paste.shortId %>"
+                                    class="text-red-400 hover:text-red-300 text-sm mt-2 inline-block">View →</a>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% } else { %>
+                        <p class="text-gray-400 text-center py-8">No pastes yet</p>
+                        <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/dropdown.js"></script>
+</body>
+
+</html>
