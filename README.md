@@ -2,7 +2,7 @@
 
 A modern, sleek pastebin application for developers to share code snippets with syntax highlighting and clean URLs.
 
-![SynzBin](https://img.shields.io/badge/version-1.1.0-red)
+![SynzBin](https://img.shields.io/badge/version-1.2.0-red)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -125,6 +125,10 @@ Create a `.env` file in the root directory:
 ```env
 PORT=3000
 NODE_ENV=development
+DISCORD_CLIENT_ID=client_id
+DISCORD_CLIENT_SECRET=client_secret
+DISCORD_CALLBACK_URL=http://localhost:3000/auth/discord/callback
+SESSION_SECRET=supersecretkey
 ```
 
 ### Database
@@ -136,24 +140,6 @@ The application uses **Synz-DB**, a custom-built JSON database inspired by Mongo
 - File-based persistence
 
 Paste data is stored in `data/paste.json`.
-
-#### Synz-DB Example Usage
-
-```javascript
-const db = require('./database/connection');
-
-// Create
-await db.create('paste', pasteData);
-
-// Find
-const paste = await db.findOne('paste', { shortId: 'abc123' });
-
-// Update
-await db.update('paste', { shortId: 'abc123' }, { views: 10 });
-
-// Delete
-await db.delete('paste', { shortId: 'abc123' });
-```
 
 ## 🚀 Development
 
@@ -255,17 +241,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📊 Future Enhancements
 
-- [ ] User authentication (Discord OAuth2)
+- [/] User authentication (Discord OAuth2)
 - [ ] Paste expiration dates
 - [ ] Private/encrypted pastes
 - [ ] Paste editing
 - [ ] Fork/clone functionality
 - [ ] Syntax themes selection
-- [ ] Rate limiting
+- [/] Rate limiting
 - [ ] Search functionality
 - [ ] Paste categories/tags
-- [ ] API rate limiting
-- [ ] Paste analytics
+- [/] API rate limiting
+- [/] Paste analytics
 
 ---
 
