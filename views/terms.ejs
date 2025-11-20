@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - SynzBin</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SynzBin">
+    <meta property="og:title" content="Terms of Service - SynzBin">
+    <meta property="og:description" content="Terms of Service and usage guidelines for SynzBin">
+    <meta name="theme-color" content="#F87171">
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen">
+    <nav class="absolute top-0 right-0 p-4 md:p-6 z-50">
+        <% if (user) { %>
+            <div class="relative">
+                <button id="user-menu-button" class="flex items-center space-x-3 hover:opacity-80 transition">
+                    <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png"
+                        alt="<%= user.username %>" class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-red-400">
+                    <span class="text-sm md:text-base text-gray-300">
+                        <%= user.username %>
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <div id="user-dropdown"
+                    class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-2">
+                    <a href="/user/<%= user.discordId %>"
+                        class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Profile
+                    </a>
+                    <a href="/logout"
+                        class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-red-400 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </div>
+            <% } else { %>
+                <a href="/auth/discord"
+                    class="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition text-sm md:text-base">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" />
+                    </svg>
+                    <span>Login</span>
+                </a>
+                <% } %>
+    </nav>
+
+    <div class="min-h-screen p-4 md:p-8 pt-20 md:pt-24">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8">
+                <a href="/"
+                    class="font-bold text-2xl md:text-4xl hover:opacity-80 transition-opacity inline-block mb-6">
+                    <span class="text-red-400">{</span>SynzBin<span class="text-red-400">}</span>
+                </a>
+                <h1 class="text-3xl md:text-5xl font-bold mb-4">Terms of Service</h1>
+                <p class="text-gray-400">Last updated: November 20, 2025</p>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 border border-gray-700 space-y-8">
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">1. Acceptance of Terms</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        By accessing and using SynzBin, you accept and agree to be bound by the terms and provisions of
+                        this agreement.
+                        If you do not agree to these terms, please do not use this service.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">2. Use of Service</h2>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        SynzBin is a code sharing platform designed for developers to share code snippets and text. You
+                        agree to:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300 ml-4">
+                        <li>Use the service only for lawful purposes</li>
+                        <li>Not post malicious code, malware, or viruses</li>
+                        <li>Not share personal information, passwords, or API keys</li>
+                        <li>Not spam or abuse the rate limiting system</li>
+                        <li>Not violate any intellectual property rights</li>
+                        <li>Not use the service to harass, abuse, or harm others</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">3. Content Ownership</h2>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        You retain all rights to the content you post on SynzBin. By posting content, you grant SynzBin
+                        a
+                        non-exclusive, worldwide license to store, display, and distribute your content for the purpose
+                        of
+                        operating the service.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed">
+                        You are responsible for the content you post and must ensure you have the right to share it.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">4. Privacy & Data</h2>
+                    <p class="text-gray-300 leading-relaxed mb-3">
+                        When you log in with Discord, we collect:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300 ml-4">
+                        <li>Your Discord username and ID</li>
+                        <li>Your Discord avatar</li>
+                        <li>Email address (if provided by Discord)</li>
+                    </ul>
+                    <p class="text-gray-300 leading-relaxed mt-3">
+                        We do not sell or share your personal information with third parties. All pastes are stored
+                        securely
+                        and associated with your account if you're logged in.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">5. Public Content</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        All pastes created on SynzBin are <strong class="text-white">publicly accessible</strong> by
+                        anyone
+                        with the link. Do not post sensitive information, passwords, private keys, or confidential data.
+                        We are not responsible for any unauthorized access to your posted content.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">6. Rate Limits</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        To prevent abuse, rate limits are applied:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300 ml-4 mt-3">
+                        <li><strong class="text-white">Anonymous users:</strong> 5 pastes per 15 minutes</li>
+                        <li><strong class="text-white">Logged-in users:</strong> 10 pastes per 15 minutes</li>
+                    </ul>
+                    <p class="text-gray-300 leading-relaxed mt-3">
+                        Exceeding these limits will result in temporary blocking. Repeated abuse may lead to permanent
+                        bans.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">7. Content Moderation</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        We reserve the right to remove any content that violates these terms, including but not limited
+                        to:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300 ml-4 mt-3">
+                        <li>Malicious code or malware</li>
+                        <li>Illegal content</li>
+                        <li>Copyrighted material without permission</li>
+                        <li>Harassment, hate speech, or threatening content</li>
+                        <li>Spam or advertisements</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">8. Account Termination</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        We reserve the right to suspend or terminate your account at any time for violations of these
+                        terms.
+                        You may also delete your account at any time by contacting us.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">9. Disclaimer</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        SynzBin is provided "as is" without warranties of any kind. We do not guarantee:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-300 ml-4 mt-3">
+                        <li>Uninterrupted or error-free service</li>
+                        <li>Security of your content</li>
+                        <li>Permanent storage of pastes</li>
+                    </ul>
+                    <p class="text-gray-300 leading-relaxed mt-3">
+                        Use the service at your own risk. We are not liable for any damages arising from use of the
+                        service.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">10. Changes to Terms</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        We may update these terms at any time. Continued use of the service after changes constitutes
+                        acceptance of the new terms. We will notify users of significant changes.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-red-400 mb-4">11. Contact</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        For questions or concerns about these terms, please contact us at:
+                    </p>
+                    <p class="text-red-400 mt-3">
+                        <a href="https://synz.xyz" target="_blank" rel="noopener noreferrer"
+                            class="hover:text-red-300 transition">synz.xyz</a>
+                    </p>
+                </section>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="/" class="text-red-400 hover:text-red-300 transition inline-flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-6 md:py-8 text-gray-500 text-xs md:text-sm px-4 mt-12">
+        <p>Made by <a href="https://synz.xyz" target="_blank" rel="noopener noreferrer"
+                class="text-red-400 hover:text-red-300 transition">Synz</a> &copy; 2025</p>
+    </footer>
+
+    <script>
+        const menuButton = document.getElementById('user-menu-button');
+        const dropdown = document.getElementById('user-dropdown');
+
+        if (menuButton && dropdown) {
+            menuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dropdown.classList.contains('hidden') && !dropdown.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

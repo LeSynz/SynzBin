@@ -11,6 +11,7 @@ const pasteSchema = new Schema({
     createdAt: { type: 'date', default: Date.now },
     views: { type: 'number', default: 0 },
     shortId: { type: 'string', required: true, unique: true },
+    userId: { type: 'string', default: null }
 }, {
     timestamps: true
 });
@@ -18,6 +19,10 @@ const pasteSchema = new Schema({
 // static crap
 pasteSchema.statics.findByShortId = function (shortId) {
     return this.findOne({ shortId });
+};
+
+pasteSchema.statics.findByUserId = function (userId) {
+    return this.find({ userId });
 };
 
 pasteSchema.statics.generateUniqueShortId = async function (length = 6) {

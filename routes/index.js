@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Paste = require('../models/PasteModel');
+const User = require('../models/UserModel');
 
 router.get('/', (req, res) => {
     res.render('index', {
         title: 'Welcome to SynzBin',
+        user: req.user || null,
         req: req
     });
 });
@@ -12,6 +14,7 @@ router.get('/', (req, res) => {
 router.get('/new', (req, res) => {
     res.render('new', {
         title: 'Create a New Paste',
+        user: req.user || null,
         req: req
     });
 });
@@ -22,6 +25,22 @@ router.get('/logout', (req, res) => {
     });
 });
 
+router.get('/terms', (req, res) => {
+    res.render('terms', {
+        title: 'Terms of Service',
+        user: req.user || null,
+        req: req
+    });
+});
+
+router.get('/privacy', (req, res) => {
+    res.render('privacy', {
+        title: 'Privacy Policy',
+        user: req.user || null,
+        req: req
+    });
+});
+
 router.get('/p/:shortId', async (req, res) => {
     const shortId = req.params.shortId;
 
@@ -29,14 +48,33 @@ router.get('/p/:shortId', async (req, res) => {
         const paste = await Paste.findByShortId(shortId);
 
         if (!paste) {
-            return res.status(404).render('404', { message: 'Paste not found' });
+            return res.status(404).render('404', {
+                message: 'Paste not found',
+                user: req.user || null,
+                req: req
+            });
         }
 
         Paste.incrementViews(shortId).catch(err => console.error('View increment error:', err));
 
-        res.render('view', { paste, req: req });
+        let pasteCreator = null;
+        if (paste.userId) {
+            pasteCreator = await User.findOne({ discordId: paste.userId });
+        }
+
+        res.render('view', {
+            paste,
+            pasteCreator: pasteCreator,
+            user: req.user || null,
+            req: req
+        });
     } catch (error) {
-        res.status(500).render('500', { message: 'Internal Server Error' });
+        console.error('Paste view error:', error);
+        res.status(500).render('500', {
+            message: 'Internal Server Error',
+            user: req.user || null,
+            req: req
+        });
     }
 });
 

@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 
+    <script src="/js/dropdown.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
@@ -45,14 +47,41 @@
 
         <div>
             <% if (user) { %>
-                <div class="flex items-center space-x-3 md:space-x-4">
-                    <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png"
-                        alt="<%= user.username %>" class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-red-400">
-                    <span class="hidden sm:inline text-sm md:text-base text-gray-300">
-                        <%= user.username %>
-                    </span>
-                    <a href="/logout"
-                        class="text-gray-400 hover:text-red-400 transition text-sm md:text-base">Logout</a>
+                <div class="relative">
+                    <button id="user-menu-button" class="flex items-center space-x-3 hover:opacity-80 transition">
+                        <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png"
+                            alt="<%= user.username %>"
+                            class="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-red-400">
+                        <span class="hidden sm:inline text-sm md:text-base text-gray-300">
+                            <%= user.username %>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div id="user-dropdown"
+                        class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-2 z-50">
+                        <a href="/user/<%= user.discordId %>"
+                            class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Profile
+                        </a>
+                        <a href="/logout"
+                            class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-red-400 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Logout
+                        </a>
+                    </div>
                 </div>
                 <% } else { %>
                     <a href="/auth/discord"
@@ -76,31 +105,50 @@
                 <%= paste.description %>
             </p>
             <% } %>
-                <div
-                    class="mt-4 flex flex-col sm:flex-row sm:items-center text-gray-400 space-y-3 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-700">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-sm">
-                            <%= new Date(paste.createdAt).toLocaleDateString() %>
+                <% if (pasteCreator) { %>
+                    <a href="/user/<%= pasteCreator.discordId %>"
+                        class="inline-block mt-3 text-sm text-gray-400 hover:text-red-400 transition flex items-center">
+                        <img src="https://cdn.discordapp.com/avatars/<%= pasteCreator.discordId %>/<%= pasteCreator.avatar %>.png"
+                            alt="<%= pasteCreator.username %>" class="w-5 h-5 rounded-full mr-2 border border-gray-600">
+                        Created by <span class="font-semibold ml-1">
+                            <%= pasteCreator.username %>
                         </span>
-                    </div>
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <span class="text-sm"><span class="text-white font-semibold">
-                                <%= paste.views %>
-                            </span> views</span>
-                    </div>
-                </div>
+                    </a>
+                    <% } else { %>
+                        <div class="inline-block mt-3 text-sm text-gray-400 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 rounded-full mr-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Created by <span class="font-semibold ml-1">Guest</span>
+                        </div>
+                        <% } %>
+                            <div
+                                class="mt-4 flex flex-col sm:flex-row sm:items-center text-gray-400 space-y-3 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-700">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-sm">
+                                        <%= new Date(paste.createdAt).toLocaleDateString() %>
+                                    </span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <span class="text-sm"><span class="text-white font-semibold">
+                                            <%= paste.views %>
+                                        </span> views</span>
+                                </div>
+                            </div>
     </div>
 
     <div class="shadow-lg">
@@ -150,19 +198,6 @@
             New Paste
         </a>
     </div>
-
-    <script>
-        document.getElementById('share-btn').addEventListener('click', function () {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                const originalText = this.innerHTML;
-                this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied!';
-                setTimeout(() => {
-                    this.innerHTML = originalText;
-                }, 2000);
-            });
-        });
-    </script>
     <script src="/js/viewer.js"></script>
 </body>
 
