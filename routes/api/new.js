@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
         await paste.save();
 
-        res.redirect(`/${shortId}`);
+        res.redirect(`/p/${shortId}`);
     } catch (error) {
         console.error('Error creating paste:', error);
         res.status(500).json({

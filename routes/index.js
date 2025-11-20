@@ -16,7 +16,13 @@ router.get('/new', (req, res) => {
     });
 });
 
-router.get('/:shortId', async (req, res) => {
+router.get('/logout', (req, res) => {
+    req.logout(() => {
+        res.redirect('/');
+    });
+});
+
+router.get('/p/:shortId', async (req, res) => {
     const shortId = req.params.shortId;
 
     try {
