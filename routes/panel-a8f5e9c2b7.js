@@ -140,7 +140,6 @@ router.get('/system', isAdmin, async (req, res) => {
             console.error('Error reading database files:', err);
         }
 
-        // Helper function to format bytes
         const formatBytes = (bytes) => {
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
             if (bytes === 0) return '0 Bytes';
