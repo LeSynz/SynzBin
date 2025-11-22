@@ -59,7 +59,7 @@ A modern, sleek pastebin application for developers to share code snippets with 
 
 ### Viewing a Paste
 
-- Navigate to `/{shortId}` to view any paste
+- Navigate to `/p/{shortId}` to view any paste
 - Use the "Share" button to copy the link
 - Use the "Copy" button to copy the code
 - Click "Raw" to view the raw content
