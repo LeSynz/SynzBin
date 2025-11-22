@@ -241,17 +241,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📊 Future Enhancements
 
-- [/] User authentication (Discord OAuth2)
+- [x] User authentication (Discord OAuth2)
 - [ ] Paste expiration dates
 - [ ] Private/encrypted pastes
 - [ ] Paste editing
 - [ ] Fork/clone functionality
 - [ ] Syntax themes selection
-- [/] Rate limiting
+- [x] Rate limiting
 - [ ] Search functionality
 - [ ] Paste categories/tags
-- [/] API rate limiting
-- [/] Paste analytics
+- [x] API rate limiting
+- [x] Paste analytics
 
 ---
 
