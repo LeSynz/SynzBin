@@ -10,6 +10,7 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
 const modes = {
     plaintext: null,
     javascript: "javascript",
+    typescript: "text/typescript",
     python: "python",
     java: "text/x-java",
     csharp: "text/x-csharp",
@@ -18,12 +19,20 @@ const modes = {
     ruby: "ruby",
     go: "go",
     rust: "rust",
+    kotlin: "text/x-kotlin",
+    swift: "text/x-swift",
+    r: "r",
+    scala: "text/x-scala",
+    dart: "application/dart",
+    lua: "lua",
+    perl: "perl",
     html: "htmlmixed",
     css: "css",
     sql: "sql",
     bash: "shell",
     json: { name: "javascript", json: true },
     xml: "xml",
+    yaml: "yaml",
     markdown: "markdown"
 };
 
@@ -37,7 +46,7 @@ const extensionMap = {
     'cxx': 'cpp',
     'c': 'cpp',
     'h': 'cpp',
-    'hpp': 'cpp',
+    'hpp': 'hpp',
     'php': 'php',
     'rb': 'ruby',
     'go': 'go',
@@ -50,7 +59,20 @@ const extensionMap = {
     'bash': 'bash',
     'json': 'json',
     'xml': 'xml',
-    'md': 'markdown'
+    'md': 'markdown',
+    'ts': 'typescript',
+    'tsx': 'typescript',
+    'jsx': 'javascript',
+    'kt': 'kotlin',
+    'swift': 'swift',
+    'r': 'r',
+    'scala': 'scala',
+    'dart': 'dart',
+    'lua': 'lua',
+    'perl': 'perl',
+    'pl': 'perl',
+    'yml': 'yaml',
+    'yaml': 'yaml'
 };
 
 function detectLanguageFromContent(content) {
@@ -65,13 +87,21 @@ function detectLanguageFromContent(content) {
     }
 
     if (content.startsWith('<!DOCTYPE') || content.startsWith('<html')) return 'html';
+
     if (content.startsWith('<?xml') || /^<\w+/.test(content)) return 'xml';
 
     if (content.startsWith('<?php')) return 'php';
 
+    if (/^package\s+\w+/m.test(content) && (/func\s+\w+\s*\(|import\s*\(|type\s+\w+\s+struct/m.test(content))) return 'go';
+
     if (/^(def|class|import|from|if __name__|print\()/m.test(content)) return 'python';
 
-    if (/^(const|let|var|function|class|import|export|=>)/m.test(content)) return 'javascript';
+    if (/^(const|let|var|function|class|import|export|=>)/m.test(content)) {
+        if (/:\s*(string|number|boolean|any|void|interface|type)\s*[=;{]/.test(content)) {
+            return 'typescript';
+        }
+        return 'javascript';
+    }
 
     if (/^(public class|private class|package|import java)/m.test(content)) return 'java';
 
@@ -79,11 +109,31 @@ function detectLanguageFromContent(content) {
 
     if (/#include\s*<|using namespace std/m.test(content)) return 'cpp';
 
-    if (/^(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP)\s/im.test(content)) return 'sql';
+    if (/^(fn|let|mut|pub|use|mod|struct|enum|impl|trait)\s/m.test(content)) return 'rust';
 
-    if (content.startsWith('#!') || /^(sudo|apt|echo|cd|ls|mkdir)\s/m.test(content)) return 'bash';
+    if (/^(def|class|module|require|include|puts|p\s)/m.test(content)) return 'ruby';
+
+    if (/^(fun|val|var|class|object|interface|package)\s/m.test(content) && /fun\s+\w+\s*\(/m.test(content)) return 'kotlin';
+
+    if (/^(import|func|var|let|class|struct|enum|protocol)\s/m.test(content) && /func\s+\w+\s*\(/m.test(content)) return 'swift';
+
+    if (/<-|^(library|require|function)\s*\(|^(print|cat|summary)\s*\(/m.test(content)) return 'r';
+
+    if (/^(object|class|trait|def|val|var|package|import)\s/m.test(content) && /def\s+\w+\s*[:(/]/m.test(content)) return 'scala';
+
+    if (/^(void|int|String|double|bool|var|final|const|class|import)\s/m.test(content) && /void\s+main\s*\(/m.test(content)) return 'dart';
+
+    if (/^(local|function|end|if|then|elseif|else)\s/m.test(content)) return 'lua';
+
+    if (/^(use strict|use warnings|sub|my\s+\$|our\s+\$|package)/m.test(content)) return 'perl';
+
+    if (/^(SELECT|INSERT|UPDATE|DELETE|CREATE|ALTER|DROP|FROM|WHERE|JOIN)\s/im.test(content)) return 'sql';
+
+    if (content.startsWith('#!') || /^(sudo|apt|echo|cd|ls|mkdir|chmod|chown)\s/m.test(content)) return 'bash';
 
     if (/[\w-]+\s*\{[\s\S]*\}/m.test(content) && content.includes(':')) return 'css';
+
+    if (/^[\w-]+:\s*[\w-]/m.test(content) && !content.includes('{')) return 'yaml';
 
     if (/^(#|\*|-|\d+\.)\s/m.test(content)) return 'markdown';
 

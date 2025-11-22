@@ -2,7 +2,7 @@
 
 A modern, sleek pastebin application for developers to share code snippets with syntax highlighting and clean URLs.
 
-![SynzBin](https://img.shields.io/badge/version-1.3.1-red)
+![SynzBin](https://img.shields.io/badge/version-1.3.2-red)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
